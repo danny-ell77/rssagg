@@ -1,0 +1,1 @@
+docker run --rm -v "C:\Users\USER\rssagg:/src" -w /src sqlc/sqlc generate
