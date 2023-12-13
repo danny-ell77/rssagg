@@ -14,7 +14,7 @@ import (
 func (apiCfg *apiConfig) createFeed(w http.ResponseWriter, r *http.Request, user database.User) {
 	type parameters struct {
 		Name string `json:"name"`
-		Url string `json:"url"`
+		Url string 	`json:"url"`
 	}
 	decoder := json.NewDecoder(r.Body)
 
@@ -38,4 +38,13 @@ func (apiCfg *apiConfig) createFeed(w http.ResponseWriter, r *http.Request, user
 		return
 	}
 	JSONResponder(w, 201, feedSerializer(feed))
+}
+
+func (apiCfg *apiConfig) getAllFeeds(w http.ResponseWriter, r *http.Request) {
+	feeds, err := apiCfg.DB.GetFeeds(r.Context())
+	if err != nil {
+		errorResponder(w, 400, fmt.Sprintf("Could not get Feeds: %v", err))
+		return
+	}
+	JSONResponder(w, 200, manyFeedsSerializer(feeds))
 }
